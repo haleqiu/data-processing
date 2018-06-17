@@ -1,4 +1,3 @@
-[TOC]
 
 Requirement :
 
@@ -10,11 +9,11 @@ Requirement :
 
 `os`
 
-##video2img
+## video2img
 
 This is a python script converting the video into image`
 
-###Argument:
+### Argument:
 
 --video is the output video file, take care of directory
 --image is the image directory
@@ -26,7 +25,7 @@ For example:
 
 * frame=2 every two frame provide one image
 
-###Working
+### Working
 
 ```bash
 python video2img.py --video VIDEO_PATH --image IMAGE_PATH --frame NUM
