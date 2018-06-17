@@ -100,3 +100,17 @@ python image2video.py --output PATH_OUTPUT --image PATH_IMAGE
 
 PATH_IMAGE is the directory of images like:
 `RAD_206482414212530`
+
+### Output:
+
+Remove the axis
+
+![006](doc/006.png)
+
+## xml2csv
+
+This file is working in object_detection
+
+## TFfor
+
+script for TFrecord
