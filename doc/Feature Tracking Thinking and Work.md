@@ -32,6 +32,8 @@ KLT makes use of spatial intensity information to direct the search for the posi
 this is the key point select method provided by cv2 and cooperated with the Lucas-Kanade method.
 
 The function finds the most **prominent corners** in the image or in the specified image region
+#### Video:
+https://github.com/haleqiu/data-processing/blob/master/doc/Lucas-KanadeOpticalFlow.avi
 
 ![LK-method](LK-method.png)
 
@@ -47,6 +49,8 @@ feature_params = dict( maxCorners = 100,
                        minDistance = 7,
                        blockSize = 2 )
 ```
+#### Video:
+https://github.com/haleqiu/data-processing/blob/master/doc/Improved-KLT.avi
 
 ![IMP006](IMP006.png)
 
@@ -60,6 +64,8 @@ Notice:
 
 * Direction corresponds to Hue value of the image. 
 * Magnitude corresponds to Value plane.
+#### Video:
+https://github.com/haleqiu/data-processing/blob/master/doc/DenseOptivalFlow.avi
 
 ![016](016.png)
 
