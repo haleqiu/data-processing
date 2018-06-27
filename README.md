@@ -69,7 +69,6 @@ prepare your own image in `Image` or Video in `Video`
 
 ## ICDM_data_preprocessing
 
-video2image
 Author: Hale Qiu
 
 Read the raw data in ICDM competition
@@ -92,13 +91,13 @@ Notice: the count is %03d%  for the sake of Hale's data (0=_=0)
 ### Working
 
 ```bash
-python image2video.py --output PATH_OUTPUT --image PATH_IMAGE
+python ICDM_data_preprocessing.py --output PATH_OUTPUT --image PATH_IMAGE
 ```
 
 * Notice：
 
 PATH_IMAGE is the directory of images like:
-`RAD_206482414212530`
+`./Image/RAD_206482414212530`
 
 ### Output:
 
