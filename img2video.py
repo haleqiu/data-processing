@@ -17,7 +17,8 @@ Notice: the count is %03d%  for the sake of Hale's data (0=_=0)
 parser = argparse.ArgumentParser(description='manual to this script')
 parser.add_argument('--video', type=str, default = "./Video/out.avi")
 parser.add_argument('--image', type=str, default= "./Image")
-parser.add_argument('--fps', type=int, default= 12)
+parser.add_argument('--fps', type=int, default= 1)
+parser.add_argument('--size', type=tuple, default= (701,701))
 args = parser.parse_args()
 
 
@@ -27,15 +28,15 @@ def main(args):
 
     fps = args.fps
     fourcc = cv2.VideoWriter_fourcc('M','J','P','G')
-    img_size=(501,501)
+    img_size=(701,701)
     videowrite(Video_Path,Image_Path,fourcc,fps,img_size)
 
 
-def ldir(path, list_name):
+def ldir(path, list_name, re=False):
     for file in os.listdir(path):
         file_path = os.path.join(path, file)
-        if os.path.isdir(file_path):
-            listdir(file_path, list_name)
+        if os.path.isdir(file_path) and re:
+            ldir(file_path, list_name)
         elif os.path.splitext(file_path)[1]=='.png':
             list_name.append(file_path)
 
@@ -51,9 +52,7 @@ def videowrite(video_path, image_path, fourcc, fps, img_size):
         img = cv2.imread(file_name_prefix+str(index)+".png")
         print(file_name_prefix+str(index)+".png")
 
-        if img.any:
-
-            videoWriter.write(img)
+        videoWriter.write(img)
     videoWriter.release()
 
 
