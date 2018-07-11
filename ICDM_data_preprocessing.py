@@ -41,7 +41,7 @@ def main(args):
             fig.savefig(Output_Path+str(index)+".png", format='png', transparent=True, dpi=300, pad_inches = 0)
 
 
-def ldir(path, list_name, re = None):
+def ldir(path, list_name, re = False):
     for file in os.listdir(path):
         file_path = os.path.join(path, file)
         if os.path.isdir(file_path) and re:
