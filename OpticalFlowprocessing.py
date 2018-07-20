@@ -65,7 +65,7 @@ def batch_optical_flow(rawdata):
         if prvs.ndim == 3:
             prvs = cv2.cvtColor(prvs,cv2.COLOR_BGR2GRAY)
             now = cv2.cvtColor(now,cv2.COLOR_BGR2GRAY)
-        flow = cv2.calcOpticalFlowFarneback(prvs,next, \
+        flow = cv2.calcOpticalFlowFarneback(prvs,now, \
         None, 0.5, 3, 15, 3, 5, 1.2, 0)
         flow_list.append(flow)
     return flow_list
@@ -76,17 +76,18 @@ def matrix_processing(image_path,output_path):
 
 
 def smooth_processing(image_folder,output_folder, scal = 3):
-
     input_folder_list = os.listdir(image_folder)
     folder_num = len(input_folder_list)
     print("total-folder: " + str(folder_num))
     for i in range(len(input_folder_list)):
+        output_path = (output_folder+"/"+input_folder_list[i])
         raw_list = list()
-        if os.path.isfile(image_folder+"/"+input_folder_list[i]):
+        print(image_folder+"/"+input_folder_list[i])
+        if os.path.isdir(image_folder+"/"+input_folder_list[i]):
             start = time.clock()
             file_dir=[]
             image_path = image_folder+"/"+input_folder_list[i]
-            ldir(image_path,file_dir)
+            utils_tool.ldir(image_path,file_dir)
             file_name_prefix=file_dir[0][0:-7]
             raw_list = list()
             for i in range(0,len(file_dir)-1):
@@ -106,8 +107,8 @@ def smooth_processing(image_folder,output_folder, scal = 3):
                     next = flow_list[i+1]
 
                 smpoth_flow = (prvs + now + next)/3
-                hsv_image = hsv_visual(smpoth_flow)
-                cv2.imwrite(output_path+ "/hsv_image_" + index1 + ".png",hsv_image)
+                hsv_image = visual.hsv_visual(smpoth_flow)
+                cv2.imwrite(output_path+ "/hsv_image_" + index + ".png",hsv_image)
 
 
         else:

@@ -1,3 +1,6 @@
+import cv2,time,os
+import numpy as np
+
 def create_gif(gif_name, path, duration = 0.3):
     '''
     生成gif文件，原始图片仅支持png格式
