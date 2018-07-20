@@ -1,6 +1,8 @@
 import os, cv2
 import argparse
 
+from utils_tool import utils_tool
+
 """
 image2video
 Author: Hale Qiu
@@ -32,20 +34,11 @@ def main(args):
     videowrite(Video_Path,Image_Path,fourcc,fps,img_size)
 
 
-def ldir(path, list_name, re=False):
-    for file in os.listdir(path):
-        file_path = os.path.join(path, file)
-        if os.path.isdir(file_path) and re:
-            ldir(file_path, list_name)
-        elif os.path.splitext(file_path)[1]=='.png':
-            list_name.append(file_path)
-
-
 def videowrite(video_path, image_path, fourcc, fps, img_size):
     videoWriter = cv2.VideoWriter(video_path, fourcc, fps, img_size)
     #file_dir="RAD_206482414212530_"
     file_dir=[]
-    ldir(image_path,file_dir)
+    utils_tool.ldir(image_path,file_dir)
     file_name_prefix = file_dir[0][0:-7]
     for i in range(0,len(file_dir)):
         index = "%03d" %i
