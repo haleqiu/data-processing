@@ -49,6 +49,5 @@ def videowrite(video_path, image_path, fourcc, fps, img_size):
     videoWriter.release()
 
 
-
 if __name__ == "__main__":
    main(args)
