@@ -31,7 +31,7 @@ def single_processing(image_path, output_path, mod="image"):
     file_dir=[]
     utils_tool.ldir(image_path,file_dir)
     file_name_prefix=file_dir[0][0:-7]
-    print(file_name_prefix)
+    #print(file_name_prefix)
     for i in range(0,len(file_dir)-1):
         index1 = "%03d" %i
         index2 = "%03d" %(i+1)
@@ -72,17 +72,23 @@ def batch_optical_flow(rawdata):
 
 
 def matrix_processing(image_path,output_path):
-    pass
+    flow_list = batch_optical_flow(raw_list)
+
 
 
 def smooth_processing(image_folder,output_folder, scal = 3):
+    smooth_flow_list = list()
     input_folder_list = os.listdir(image_folder)
     folder_num = len(input_folder_list)
     print("total-folder: " + str(folder_num))
     for i in range(len(input_folder_list)):
         output_path = (output_folder+"/"+input_folder_list[i])
+        isExists=os.path.exists(output_path)
+        if not isExists:
+            os.makedirs(output_path)
+
         raw_list = list()
-        print(image_folder+"/"+input_folder_list[i])
+        #print(image_folder+"/"+input_folder_list[i])
         if os.path.isdir(image_folder+"/"+input_folder_list[i]):
             start = time.clock()
             file_dir=[]
@@ -90,12 +96,15 @@ def smooth_processing(image_folder,output_folder, scal = 3):
             utils_tool.ldir(image_path,file_dir)
             file_name_prefix=file_dir[0][0:-7]
             raw_list = list()
+
             for i in range(0,len(file_dir)-1):
                 index = "%03d" %i
                 raw_image = cv2.imread(file_name_prefix+str(index)+".png")
                 raw_list.append(raw_image)
             flow_list = batch_optical_flow(raw_list)
+
             for i in range(0,len(flow_list)):
+                index = "%03d" %i
                 now = flow_list[i]
                 if i ==0:
                     prvs = flow_list[i]
@@ -107,18 +116,19 @@ def smooth_processing(image_folder,output_folder, scal = 3):
                     next = flow_list[i+1]
 
                 smpoth_flow = (prvs + now + next)/3
+                smooth_flow_list.append(smpoth_flow)
                 hsv_image = visual.hsv_visual(smpoth_flow)
                 cv2.imwrite(output_path+ "/hsv_image_" + index + ".png",hsv_image)
-
 
         else:
             print("not directory")
             folder_num-=1
     flow_list = batch_optical_flow(raw_list)
     print("done"+ str(len(input_folder_list)))
-
+    return smooth_flow_list
 
 def main():
+    print("using mode"+str(args.mode))
     if args.mode == "single":
         single_processing(args.image,args.output)
     elif args.mode == "batch":
@@ -127,6 +137,7 @@ def main():
         # notice the image x and y [y,x] in opencv
         matrix_processing(args.image, args.output)
     elif args.mode == "smooth_batch":
-        smooth_processing(args.image, args.output)
+        smpoth_flow_list = smooth_processing(args.image, args.output)
+
 if __name__ == '__main__':
     main()
