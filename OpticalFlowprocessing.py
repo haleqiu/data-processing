@@ -1,4 +1,4 @@
-import cv2,time
+import cv2,time,pickle
 import os
 import numpy as np
 import argparse
@@ -71,9 +71,32 @@ def batch_optical_flow(rawdata):
     return flow_list
 
 
-def matrix_processing(image_path,output_path):
-    flow_list = batch_optical_flow(raw_list)
+def matrix_processing(image_folder,output_folder):
+    flow_dict = dict()
+    input_folder_list = os.listdir(image_folder)
+    folder_num = len(input_folder_list)
+    for i in range(len(input_folder_list)):
+        #output_path = output_folder+"/"+input_folder_list[i]
+        image_path = image_folder+"/"+input_folder_list[i]
 
+        InputisDir = os.path.isdir(image_path)
+        if InputisDir:
+            file_dir = list()
+            utils_tool.ldir(image_path,file_dir)
+            raw_list = list()
+            file_name_prefix = file_dir[0][-27:-8]
+            for j in range(len(file_dir)):
+                index = "%03d" %j
+                raw_image = cv2.imread(file_dir[0][0:-7]+str(index)+".png")
+                raw_list.append(raw_image)
+
+            flow_list = batch_optical_flow(raw_list)
+            #isExists=os.path.exists(output_path)
+            print("dumping: " + file_name_prefix)
+            flow_dict[file_name_prefix] = flow_list
+
+    pickle.dump(flow_dict,open(output_folder + "/flowlist.pk","bw"))
+    print("total-folder: " + str(folder_num))
 
 
 def smooth_processing(image_folder,output_folder, scal = 3):
@@ -82,17 +105,17 @@ def smooth_processing(image_folder,output_folder, scal = 3):
     folder_num = len(input_folder_list)
     print("total-folder: " + str(folder_num))
     for i in range(len(input_folder_list)):
-        output_path = (output_folder+"/"+input_folder_list[i])
+        output_path = output_folder+"/"+input_folder_list[i]
         isExists=os.path.exists(output_path)
         if not isExists:
             os.makedirs(output_path)
 
         raw_list = list()
         #print(image_folder+"/"+input_folder_list[i])
-        if os.path.isdir(image_folder+"/"+input_folder_list[i]):
+        image_path = image_folder+"/"+input_folder_list[i]
+        if os.path.isdir(image_path):
             start = time.clock()
-            file_dir=[]
-            image_path = image_folder+"/"+input_folder_list[i]
+            file_dir= list()
             utils_tool.ldir(image_path,file_dir)
             file_name_prefix=file_dir[0][0:-7]
             raw_list = list()
@@ -128,7 +151,7 @@ def smooth_processing(image_folder,output_folder, scal = 3):
     return smooth_flow_list
 
 def main():
-    print("using mode"+str(args.mode))
+    print("using mode: "+str(args.mode))
     if args.mode == "single":
         single_processing(args.image,args.output)
     elif args.mode == "batch":
