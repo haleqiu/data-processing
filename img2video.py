@@ -30,16 +30,19 @@ def main(args):
 
     fps = args.fps
     fourcc = cv2.VideoWriter_fourcc('M','J','P','G')
-    img_size=(701,701)
-    videowrite(Video_Path,Image_Path,fourcc,fps,img_size)
+    #img_size=(701,701)
+    videowrite(Video_Path,Image_Path,fourcc,fps)
 
 
-def videowrite(video_path, image_path, fourcc, fps, img_size):
-    videoWriter = cv2.VideoWriter(video_path, fourcc, fps, img_size)
+def videowrite(video_path, image_path, fourcc, fps):
+    
     #file_dir="RAD_206482414212530_"
     file_dir=[]
     utils_tool.ldir(image_path,file_dir)
     file_name_prefix = file_dir[0][0:-7]
+    height, width, channels = cv2.imread(file_name_prefix+'000'+".png").shape
+    image_size = (height,width)
+    videoWriter = cv2.VideoWriter(video_path, fourcc, fps, img_size)
     for i in range(0,len(file_dir)):
         index = "%03d" %i
         img = cv2.imread(file_name_prefix+str(index)+".png")
